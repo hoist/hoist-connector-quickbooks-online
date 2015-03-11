@@ -6,11 +6,13 @@
     "key": "consumerKey",
     "type" : "text",
     "description": "Consumer Token",
+    "for_types":["Public"],
     "required": true
   },{
     "key": "consumerSecret",
     "type" : "text",
     "description": "Consumer Secret",
+    "for_types":["Public"],
     "required": true
   }],
    "auth_types": {
