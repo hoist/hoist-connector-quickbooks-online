@@ -35,7 +35,6 @@
   "dependencies": {
     "bluebird": "^2.3.11",
     "config": "^1.10.0",
-    "hoist-certificate-store": "git://github.com/hoist/hoist-certificate-store",
     "hoist-errors": "git://github.com/hoist/hoist-errors",
     "hoist-logger": "git://github.com/hoist/hoist-logger",
     "lodash": "^2.4.1",
