@@ -13,6 +13,12 @@
     "description": "Consumer Secret",
     "required": true
   }],
+   "auth_types": {
+    "Public": {
+      "setup_help": "./samples/getting_started.md",
+      "requires_signing": true
+    }
+  },
   "samples" : {
     "getting_started" : "./samples/getting-started.js"
   },
