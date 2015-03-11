@@ -1,0 +1,135 @@
+{
+  "name": "Quickbooks Online",
+  "slug" : "qbo",
+  "url": "http://quickbooks.intuit.com/",
+  "settings": [{
+    "key": "consumerKey",
+    "type" : "text",
+    "description": "Consumer Token",
+    "required": true
+  },{
+    "key": "consumerSecret",
+    "type" : "text",
+    "description": "Consumer Secret",
+    "required": true
+  }],
+  "samples" : {
+    "getting_started" : "./samples/getting-started.js"
+  },
+  "endpoints" : {
+    "Attachments" : {
+      "sample" : "./samples/endpoints/attachments.js",
+      "docs" : "https://developer.xero.com/documentation/api/attachments"
+    },
+    "Accounts" : {
+      "sample" : "./samples/endpoints/accounts.js",
+      "docs" : "https://developer.xero.com/documentation/api/accounts"
+    },
+    "BankStatements" : {
+      "sample" : "./samples/endpoints/bankstatements.js",
+      "docs" : "https://developer.xero.com/documentation/api/bankstatements"
+    },
+    "BankTransactions" : {
+      "sample" : "./samples/endpoints/banktransactions.js",
+      "docs" : "https://developer.xero.com/documentation/api/banktransactions",
+      "subscribe" : true
+    },
+    "BankTransfers" : {
+      "sample" : "./samples/endpoints/banktransfers.js",
+      "docs" : "https://developer.xero.com/documentation/api/banktransfers",
+      "subscribe" : true
+    },
+    "BrandingThemes" : {
+      "sample" : "./samples/endpoints/brandingthemes.js",
+      "docs" : "https://developer.xero.com/documentation/api/brandingthemes"
+    },
+    "Contacts" : {
+      "sample" : "./samples/endpoints/contacts.js",
+      "docs" : "https://developer.xero.com/documentation/api/contacts",
+      "subscribe" : true
+    },
+    "ContactGroups" : {
+      "sample" : "./samples/endpoints/contactgroups.js",
+      "docs" : "https://developer.xero.com/documentation/api/contactgroups"
+    },
+    "CreditNotes" : {
+      "sample" : "./samples/endpoints/creditnotes.js",
+      "docs" : "https://developer.xero.com/documentation/api/creditnotes",
+      "subscribe" : true
+    },
+    "Currencies" : {
+      "sample" : "./samples/endpoints/currencies.js",
+      "docs" : "https://developer.xero.com/documentation/api/currencies"
+    },
+    "Employees" : {
+      "sample" : "./samples/endpoints/employees.js",
+      "docs" : "https://developer.xero.com/documentation/api/employees",
+      "subscribe" : true
+    },
+    "ExpenseClaims" : {
+      "sample" : "./samples/endpoints/expenseclaims.js",
+      "docs" : "https://developer.xero.com/documentation/api/expenseclaims",
+      "subscribe" : true
+    },
+    "Invoices" : {
+      "sample" : "./samples/endpoints/invoices.js",
+      "docs" : "https://developer.xero.com/documentation/api/invoices",
+      "subscribe" : true
+    },
+    "Items" : {
+      "sample" : "./samples/endpoints/items.js",
+      "docs" : "https://developer.xero.com/documentation/api/items",
+      "subscribe" : true
+    },
+    "Journals" : {
+      "sample" : "./samples/endpoints/journals.js",
+      "docs" : "https://developer.xero.com/documentation/api/journals",
+      "subscribe" : true
+    },
+    "ManualJournals" : {
+      "sample" : "./samples/endpoints/manualjournals.js",
+      "docs" : "https://developer.xero.com/documentation/api/manualjournals",
+      "subscribe" : true
+    },
+    "Organisation" : {
+      "sample" : "./samples/endpoints/organisation.js",
+      "docs" : "https://developer.xero.com/documentation/api/organisation"
+    },
+    "Payments" : {
+      "sample" : "./samples/endpoints/payments.js",
+      "docs" : "https://developer.xero.com/documentation/api/payments",
+      "subscribe" : true
+    },
+    "Receipts" : {
+      "sample" : "./samples/endpoints/receipts.js",
+      "docs" : "https://developer.xero.com/documentation/api/receipts",
+      "subscribe" : true
+    },
+    "RepeatingInvoices" : {
+      "sample" : "./samples/endpoints/repeatinginvoices.js",
+      "docs" : "https://developer.xero.com/documentation/api/repeatinginvoices"
+    },
+    "Reports" : {
+      "sample" : "./samples/endpoints/reports.js",
+      "docs" : "https://developer.xero.com/documentation/api/reports"
+    },
+    "TaxRates" : {
+      "sample" : "./samples/endpoints/taxrates.js",
+      "docs" : "https://developer.xero.com/documentation/api/taxrates"
+    },
+    "TrackingCategories" : {
+      "sample" : "./samples/endpoints/trackingcategories.js",
+      "docs" : "https://developer.xero.com/documentation/api/trackingcategories"
+    },
+    "Types" : {
+      "sample" : "./samples/endpoints/types.js",
+      "docs" : "https://developer.xero.com/documentation/api/types"
+    },
+    "Users" : {
+      "sample" : "./samples/endpoints/users.js",
+      "docs" : "https://developer.xero.com/documentation/api/users",
+      "subscribe" : true
+    }
+
+  }
+}
