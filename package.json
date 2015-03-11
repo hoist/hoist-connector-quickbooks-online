@@ -2,7 +2,7 @@
   "name": "hoist-connector-quickbooks-online",
   "version": "1.0.0",
   "description": "Hoist's Connector to Quickbooks Online",
-  "main": "Gulpfile.js",
+  "main": "lib/connector.js",
   "scripts": {
     "test": "gulp test"
   },
