@@ -56,7 +56,7 @@ module.exports = function (req, res, done) {
   //update the credit memo
   return QBO.update('/creditmemo', creditMemo)
     .then(function (response) {
-      Hoist.log('credit memo posted', respose);
+      Hoist.log('credit memo posted', response);
     }).then(function () {
       done();
     });

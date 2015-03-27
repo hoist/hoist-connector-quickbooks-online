@@ -42,8 +42,13 @@
       "subscribe": false
     },
     "CreditMemo": {
-      "sample": "./samples/endpoints/invoice.js",
+      "sample": "./samples/endpoints/creditMemo.js",
       "docs": "https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/CreditMemo",
+      "subscribe": false
+    },
+    "Payment": {
+      "sample": "./samples/endpoints/payment.js",
+      "docs": "https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/payment",
       "subscribe": false
     }
   }
