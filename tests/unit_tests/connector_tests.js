@@ -30,30 +30,30 @@ describe('QBOConnector', function () {
     });
 
   });
-  describe('#put', function () {
+  describe('#update', function () {
     var response = {};
     var data = 'data';
     var result;
     before(function () {
       sinon.stub(connector, 'request').returns(BBPromise.resolve(response));
-      result = connector.put('/CompanyInfo/Id', data);
+      result = connector.update('/CompanyInfo/Id', data);
     });
     after(function () {
       connector.request.restore();
     });
     it('calls #request', function () {
       expect(connector.request)
-        .to.have.been.calledWith('PUT', '/CompanyInfo/Id', data);
+        .to.have.been.calledWith('POST', '/CompanyInfo/Id?operation=update', data);
     });
 
   });
-  describe('#post', function () {
+  describe('#create', function () {
     var response = {};
     var data = 'data';
     var result;
     before(function () {
       sinon.stub(connector, 'request').returns(BBPromise.resolve(response));
-      result = connector.post('/CompanyInfo/Id', data);
+      result = connector.create('/CompanyInfo/Id', data);
     });
     after(function () {
       connector.request.restore();
