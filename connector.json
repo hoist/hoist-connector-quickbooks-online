@@ -36,7 +36,7 @@
       "docs": "https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data",
       "subscribe": false
     },
-    "Invoice" {
+    "Invoice": {
       "sample": "./samples/endpoint/invoice.js",
       "docs": "https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/invoice",
       "subscribe": false
