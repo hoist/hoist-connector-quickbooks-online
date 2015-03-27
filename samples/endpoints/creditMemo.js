@@ -1,75 +1,77 @@
 /* Just copy and paste this snippet into your code */
-/* create an invoice */
+/* create a credit memo */
 module.exports = function (req, res, done) {
 
-  var invoice = {
+  var creditMemo = {
     "Line": [{
-      "Amount": 100.00,
+      "Amount": 50,
       "DetailType": "SalesItemLineDetail",
       "SalesItemLineDetail": {
         "ItemRef": {
-          "value": "1",
-          "name": "Services"
+          "value": "3",
+          "name": "Concrete"
         }
       }
     }],
     "CustomerRef": {
-      "value": "21"
+      "value": "3",
+      "name": "CoolCars"
     }
   };
   var QBO = Hoist.connector("<key>");
 
-  //create an invoices
-  return QBO.create('/invoice', invoice)
+  //create a credit memo,
+  return QBO.create('/creditmemo', creditMemo)
     .then(function (response) {
-      Hoist.log('invoice posted', response);
+      Hoist.log('credit memo posted', response);
     }).then(function () {
       done();
     });
 
 };
 
-/* update an invoice */
+/* update an credit memo */
 module.exports = function (req, res, done) {
 
-  var invoice = {
+  var creditMemo = {
     "Id": 33,
     "SyncToken": 0,
     "Line": [{
-      "Amount": 100.00,
+      "Amount": 50,
       "DetailType": "SalesItemLineDetail",
       "SalesItemLineDetail": {
         "ItemRef": {
-          "value": "1",
-          "name": "Services"
+          "value": "3",
+          "name": "Concrete"
         }
       }
     }],
     "CustomerRef": {
-      "value": "21"
+      "value": "3",
+      "name": "CoolCars"
     }
   };
   var QBO = Hoist.connector("<key>");
 
-  //update the invoices
-  return QBO.update('/invoice', invoice)
+  //update the credit memo
+  return QBO.update('/creditmemo', creditMemo)
     .then(function (response) {
-      Hoist.log('invoice posted', response);
+      Hoist.log('credit memo posted', respose);
     }).then(function () {
       done();
     });
 
 };
 
-/* get an invoice */
+/* get a credit memo */
 module.exports = function (req, res, done) {
 
   var QBO = Hoist.connector("<key>");
 
-  //get the invoices
-  return QBO.get('/invoice/33')
+  //get the credit memom
+  return QBO.get('/creditmemo/33')
     .then(function (response) {
-      Hoist.log('invoice retrieved', response);
+      Hoist.log('credit memo retrieved', response);
     }).then(function () {
       done();
     });
@@ -77,19 +79,19 @@ module.exports = function (req, res, done) {
 };
 
 
-/* delete an invoice */
+/* delete a credit memo */
 module.exports = function (req, res, done) {
-  var invoice = {
+  var creditMemo = {
     "Id": 33,
     "SyncToken": 0
   };
 
   var QBO = Hoist.connector("<key>");
 
-  //delete the invoices
-  return QBO.delete('/invoice', invoice)
+  //delete the credit memo
+  return QBO.delete('/creditmemo', creditMemo)
     .then(function (response) {
-      Hoist.log('invoice posted', response);
+      Hoist.log('credit memo deleted', response);
     }).then(function () {
       done();
     });

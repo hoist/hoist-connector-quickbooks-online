@@ -40,6 +40,11 @@
       "sample": "./samples/endpoints/invoice.js",
       "docs": "https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/invoice",
       "subscribe": false
+    },
+    "CreditMemo": {
+      "sample": "./samples/endpoints/invoice.js",
+      "docs": "https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/CreditMemo",
+      "subscribe": false
     }
   }
 }
