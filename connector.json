@@ -1,30 +1,40 @@
 {
   "name": "Quickbooks Online",
-  "slug" : "qbo",
+  "slug": "qbo",
   "url": "http://quickbooks.intuit.com/",
   "settings": [{
     "key": "consumerKey",
-    "type" : "text",
+    "type": "text",
     "description": "Consumer Token",
-    "for_types":["Public"],
+    "for_types": ["Public"],
+    "required": true
+  }, {
+    "key": "consumerSecret",
+    "type": "text",
+    "description": "Consumer Secret",
+    "for_types": ["Public"],
     "required": true
   },{
-    "key": "consumerSecret",
-    "type" : "text",
-    "description": "Consumer Secret",
-    "for_types":["Public"],
-    "required": true
+    "key": "isSandbox",
+    "type": "boolean",
+    "description": "Use Sandbox",
+    "for_types": ["Public"],
+    "required": false
   }],
-   "auth_types": {
+  "auth_types": {
     "Public": {
       "setup_help": "./samples/getting_started.md",
       "requires_signing": true
     }
   },
-  "samples" : {
-    "getting_started" : "./samples/getting-started.js"
+  "samples": {
+    "getting_started": "./samples/getting-started.js"
   },
-  "endpoints" : {
-
+  "endpoints": {
+    "Invoice": {
+      "sample": "./samples/endpoints/invoice.js",
+      "docs": "https://developer.intuit.com/docs/api/accounting#/invoice",
+      "subscribe": true
+    }
   }
 }
