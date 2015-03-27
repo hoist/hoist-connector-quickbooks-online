@@ -31,10 +31,10 @@
     "getting_started": "./samples/getting-started.js"
   },
   "endpoints": {
-    "Invoice": {
-      "sample": "./samples/endpoints/invoice.js",
-      "docs": "https://developer.intuit.com/docs/api/accounting#/invoice",
-      "subscribe": true
+    "Query": {
+      "sample": "./samples/endpoints/query.js",
+      "docs": "https://developer.intuit.com/docs/0100_accounting/0300_developer_guides/querying_data",
+      "subscribe": false
     }
   }
 }
