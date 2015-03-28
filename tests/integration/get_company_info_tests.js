@@ -4,9 +4,9 @@ var QBOConnector = require('../../lib/connector');
 var config = require('config');
 var expect = require('chai').expect;
 
-describe('get company info', function () {
+describe.skip('get company info', function () {
   this.timeout(50000);
-  describe('valid connection to get /contacts', function () {
+  describe('valid connection to get /companyinfo', function () {
     var response;
     before(function () {
       var connector = new QBOConnector({
