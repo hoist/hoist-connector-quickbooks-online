@@ -1,7 +1,7 @@
 {
-  "name": "Quickbooks Online",
-  "slug": "qbo",
-  "url": "http://quickbooks.intuit.com/",
+  "name": "MYOB AccountRight",
+  "slug": "myob-accountright",
+  "url": "http://myob.com.au/products/small-business/accounting-software/myob-accountright-1422735752948",
   "settings": [{
     "key": "consumerKey",
     "type": "text",
@@ -39,17 +39,17 @@
     "Invoice": {
       "sample": "./samples/endpoints/invoice.js",
       "docs": "https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/invoice",
-      "subscribe": false
+      "subscribe": true
     },
     "CreditMemo": {
       "sample": "./samples/endpoints/creditMemo.js",
       "docs": "https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/CreditMemo",
-      "subscribe": false
+      "subscribe": true
     },
     "Payment": {
       "sample": "./samples/endpoints/payment.js",
       "docs": "https://developer.intuit.com/docs/0025_quickbooksapi/0050_data_services/030_entity_services_reference/payment",
-      "subscribe": false
+      "subscribe": true
     }
   }
 }

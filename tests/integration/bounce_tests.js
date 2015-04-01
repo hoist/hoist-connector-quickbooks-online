@@ -84,15 +84,15 @@ describe.skip('bounce flow', function () {
       /*jshint camelcase: false */
       var bounce = {
         query: {
-          realmId: config.get('companyId'),
-          oauth_verifier: 'VERIFIER HERE'
+          realmId: config.get('CompanyId'),
+          oauth_verifier: 'yakxdr4'
         },
         get: function (key) {
           if (key === 'RequestToken') {
-            return 'REQUEST TOKEN HERE';
+            return 'qyprdwXUxAgTivz0DXm9PK6ZSvVg0KyYAw35QdqgtwqHtXrQ';
           }
           if (key === 'RequestTokenSecret') {
-            return 'REQUEST TOKEN SECRET HERE';
+            return 'ifhaVHbb2vG2KPUoFcbFLNP2SHaTuqZa9HmKJugJ';
           }
           return undefined;
         },
