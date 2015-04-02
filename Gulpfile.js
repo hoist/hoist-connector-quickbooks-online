@@ -28,15 +28,15 @@ function runJshint() {
 
 function mochaServer(options) {
 
-  return gulp.src(globs.specs, {
-      read: false
-    })
-    .pipe(mocha(options || {
-      reporter: 'nyan',
-      growl: true
-    }));
-}
-// Testing
+    return gulp.src(globs.specs, {
+        read: false
+      })
+      .pipe(mocha(options || {
+        reporter: 'nyan',
+        growl: true
+      }));
+  }
+  // Testing
 var coverageOptions = {
   dir: './coverage',
   reporters: ['html', 'lcov', 'text-summary', 'html', 'json'],
@@ -52,7 +52,12 @@ gulp.task('jshint', function () {
   return runJshint();
 });
 
-
+gulp.task('test-without-coverage', function (cb) {
+  mochaServer({
+      reporter: 'spec'
+    })
+    .on('end', cb);
+});
 
 gulp.task('mocha-server-continue', function (cb) {
   gulp.src(globs.js.lib)
@@ -62,10 +67,10 @@ gulp.task('mocha-server-continue', function (cb) {
     })
     .on('finish', function () {
       mochaServer().on('error', function (err) {
-        console.trace(err);
-        this.emit('end');
-        cb();
-      }).pipe(istanbul.writeReports(coverageOptions))
+          console.trace(err);
+          this.emit('end');
+          cb();
+        }).pipe(istanbul.writeReports(coverageOptions))
         .on('end', cb);
     });
 });
@@ -88,8 +93,8 @@ gulp.task('mocha-server', function (cb) {
     .pipe(istanbul())
     .on('finish', function () {
       mochaServer({
-        reporter: 'spec'
-      })
+          reporter: 'spec'
+        })
         .pipe(istanbul.writeReports(coverageOptions))
         .on('end', cb);
     });
@@ -100,7 +105,8 @@ gulp.task('watch', function () {
   var watching = false;
   gulp.start(
     'jshint',
-    'mocha-server-continue', function () {
+    'mocha-server-continue',
+    function () {
       // Protect against this function being called twice
       if (!watching) {
         watching = true;
@@ -117,6 +123,10 @@ gulp.task('test', function () {
   return gulp.start('jshint-build',
     'mocha-server',
     'enforce-coverage');
+});
+gulp.task('debug-test', function () {
+  return gulp.start('jshint-build',
+    'test-without-coverage');
 });
 gulp.task('build', function () {
   return gulp.start('jshint-build',

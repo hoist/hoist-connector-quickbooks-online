@@ -5,7 +5,7 @@ var config = require('config');
 
 var moment = require('moment');
 
-describe.only('get change info', function () {
+describe.skip('get change info', function () {
   this.timeout(50000);
   describe('valid connection to get /cdc', function () {
     var response;

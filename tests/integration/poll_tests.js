@@ -7,7 +7,7 @@ var BouncerToken = model.BouncerToken;
 var Application = model.Application;
 var sinon = require('sinon');
 
-describe('polling', function () {
+describe.skip('polling', function () {
   describe('given no previous polls', function () {
     var subscription;
     before(function () {
@@ -30,8 +30,7 @@ describe('polling', function () {
       poll(app, subscription, connector, bouncerToken);
     });
     it('raises NEW:INVOICE events', function () {
-      expect(subscription.eventEmitter.emit)
-      .to.have.been.calledWith()
+
 
     });
   });
