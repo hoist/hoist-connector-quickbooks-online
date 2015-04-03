@@ -16,7 +16,8 @@ describe('QBOPoller', function () {
         _id: 'subscription',
         endpoints: ['Invoice', 'Payment'],
         get: sinon.stub(),
-        set: sinon.stub()
+        set: sinon.stub(),
+        delayTill: sinon.stub()
       },
       settings: {
 
@@ -54,7 +55,8 @@ describe('QBOPoller', function () {
         _id: 'subscription',
         endpoints: ['Invoice', 'Payment'],
         get: sinon.stub(),
-        set: sinon.stub()
+        set: sinon.stub(),
+        delayTill: sinon.stub()
       },
       settings: {
 
