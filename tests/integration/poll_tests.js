@@ -1,7 +1,7 @@
 'use strict';
 require('../bootstrap');
 var poll = require('../../lib/poll');
-var model = require('hoist-model');
+var model = require('@hoist/model');
 var ConnectorSetting = model.ConnectorSetting;
 var BouncerToken = model.BouncerToken;
 var Application = model.Application;

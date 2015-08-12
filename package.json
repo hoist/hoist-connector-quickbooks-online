@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/hoist/hoist-connector-quickbooks-online",
   "devDependencies": {
+    "@hoist/model": "^1.1.0",
     "chai": "^1.9.1",
     "chai-as-promised": "^4.1.1",
     "gulp": "^3.8.8",
@@ -24,7 +25,6 @@
     "gulp-istanbul-enforcer": "^1.0.3",
     "gulp-jshint": "^1.8.4",
     "gulp-mocha": "^1.1.0",
-    "hoist-model": "git://github.com/hoist/hoist-model",
     "jshint-growl-reporter": "^0.1.1",
     "jshint-stylish": "^0.4.0",
     "run-sequence": "^0.3.6",
@@ -33,14 +33,14 @@
     "zombie": "^2.5.1"
   },
   "dependencies": {
+    "@hoist/errors": "^1.0.3",
+    "@hoist/logger": "^1.0.3",
+    "@hoist/oauth": "^1.0.0",
     "bluebird": "^2.3.11",
     "config": "^1.10.0",
-    "hoist-errors": "git://github.com/hoist/hoist-errors",
-    "hoist-logger": "git://github.com/hoist/hoist-logger",
     "lodash": "^2.4.1",
     "moment": "^2.8.4",
     "node-uuid": "^1.4.2",
-    "oauth": "git://github.com/hoist/node-oauth",
     "validator": "^3.22.2",
     "xml2js": "^0.4.4"
   }

@@ -1,7 +1,7 @@
 'use strict';
 var QBOConnector = require('../../lib/connector');
 var sinon = require('sinon');
-var OAuth = require('oauth').OAuth;
+var OAuth = require('@hoist/oauth').OAuth;
 var expect = require('chai').expect;
 var BBPromise = require('bluebird');
 describe('QBO Connector', function () {
