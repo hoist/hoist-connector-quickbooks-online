@@ -1,7 +1,7 @@
 {
-  "name": "MYOB AccountRight",
-  "slug": "myob-accountright",
-  "url": "http://myob.com.au/products/small-business/accounting-software/myob-accountright-1422735752948",
+  "name": "Quickbooks Online",
+  "slug": "qbo",
+  "url": "https://developer.intuit.com/docs/api/accounting",
   "settings": [{
     "key": "consumerKey",
     "type": "text",
