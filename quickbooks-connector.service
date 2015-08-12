@@ -1,0 +1,19 @@
+[Unit]
+Description=Deployment for quickbooks Connector
+Requires=config.service
+After=config.service
+
+[Service]
+User=core
+Type=oneshot
+ExecStartPre=-/usr/bin/docker kill quickbooks-connector-deploy
+ExecStartPre=-/usr/bin/docker rm quickbooks-connector-deploy
+ExecStartPre=-/usr/bin/docker pull quay.io/hoist/connector-quickbooks:master
+ExecStart=/usr/bin/docker run -h quickbooks-connector-deploy --name quickbooks-connector-deploy -e "ROOT_CONNECTOR_DIR=/shares/connectors" --volumes-from config -P quay.io/hoist/connector-quickbooks:master
+ExecStop=/usr/bin/docker stop quickbooks-connector-deploy
+ExecStopPost=-/usr/bin/docker kill quickbooks-connector-deploy
+ExecStopPost=-/usr/bin/docker rm quickbooks-connector-deploy
+TimeoutStartSec=30m
+
+[X-Fleet]
+MachineMetadata=container_type=web
