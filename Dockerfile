@@ -23,6 +23,9 @@ WORKDIR /usr/src/app
 #only show warnings for npm
 ENV NPM_CONFIG_LOGLEVEL=warn
 
+#install global packages
+RUN npm install -g gulp
+
 #npm install
 ADD package.json /usr/src/app/package.json
 RUN npm install
