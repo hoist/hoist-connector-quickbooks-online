@@ -1,0 +1,7 @@
+{
+  "Hoist": {
+    "domains": {
+      "bouncer": "bouncer.hoist.io"
+    }
+  }
+}
