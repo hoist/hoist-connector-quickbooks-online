@@ -1,5 +1,4 @@
 'use strict';
-
 var BBPromise = require('bluebird');
 var OAuth = require('@hoist/oauth').OAuth;
 var _ = require('lodash');
@@ -12,7 +11,15 @@ function QBOConnector(settings) {
   }, 'constructed qbo-connector');
   this.settings = settings;
 
-  this.auth = BBPromise.promisifyAll(new OAuth('https://oauth.intuit.com/oauth/v1/get_request_token', 'https://oauth.intuit.com/oauth/v1/get_access_token', settings.consumerKey, settings.consumerSecret, '1.0', 'https://' + config.get('Hoist.domains.bouncer') + '/bounce', 'HMAC-SHA1'), {
+  this.auth = BBPromise.promisifyAll(new OAuth(
+    'https://oauth.intuit.com/oauth/v1/get_request_token',
+    'https://oauth.intuit.com/oauth/v1/get_access_token',
+    settings.consumerKey,
+    settings.consumerSecret,
+    '1.0',
+    'https://' + config.get('Hoist.domains.bouncer') + '/bounce',
+    'HMAC-SHA1'
+  ), {
     multiArgs: true
   });
   this.auth._originalCreateClient = this.auth._createClient;
@@ -26,6 +33,7 @@ function QBOConnector(settings) {
   });
   _.bindAll(this);
 }
+
 
 /* istanbul ignore next */
 QBOConnector.prototype.authorize = function (authorization) {
@@ -43,40 +51,52 @@ QBOConnector.prototype.generateRequestToken = function () {
   return this.auth.getOAuthRequestTokenAsync();
 };
 
+
 QBOConnector.prototype.receiveBounce = function (bounce) {
   logger.info(this.settings);
   if (bounce.get('RequestToken')) {
     /*jshint camelcase: false */
-    return this.swapRequestToken(bounce.get('RequestToken'), bounce.get('RequestTokenSecret'), bounce.query.oauth_verifier).spread(function (accessToken, accessTokenSecret, auth_headers) {
-      logger.info(auth_headers);
-      logger.info('got request token');
-      return bounce.delete('RequestToken').then(function () {
-        return bounce.delete('RequestTokenSecret');
-      }).then(function () {
-        return bounce.set('AccessToken', accessToken);
-      }).then(function () {
-        return bounce.set('AccessTokenSecret', accessTokenSecret);
-      }).then(function () {
-        return bounce.set('CompanyId', bounce.query.realmId);
-      }).then(function () {
-        bounce.done();
+    return this.swapRequestToken(bounce.get('RequestToken'), bounce.get('RequestTokenSecret'), bounce.query.oauth_verifier)
+      .spread(function (accessToken, accessTokenSecret, auth_headers) {
+        logger.info(auth_headers);
+        logger.info('got request token');
+        return bounce.delete('RequestToken')
+          .then(function () {
+            return bounce.delete('RequestTokenSecret');
+          }).then(function () {
+            return bounce.set('AccessToken', accessToken);
+          }).then(function () {
+            return bounce.set('AccessTokenSecret', accessTokenSecret);
+          }).then(function () {
+            return bounce.set('CompanyId', bounce.query.realmId);
+          }).then(function () {
+            bounce.done();
+          });
       });
-    });
   } else if (bounce.get('IntuitSetup')) {
-    return this.generateRequestToken().bind(this).spread(function (requestToken, requestTokenSecret) {
-      logger.info('got request token');
-      return bounce.set('RequestToken', requestToken).bind(this).then(function () {
-        return bounce.set('RequestTokenSecret', requestTokenSecret);
-      }).bind(this).then(function () {
-        bounce.redirect('https://appcenter.intuit.com/Connect/Begin?oauth_token=' + requestToken);
+    return this.generateRequestToken()
+      .bind(this)
+      .spread(function (requestToken, requestTokenSecret) {
+        logger.info('got request token');
+        return bounce.set('RequestToken', requestToken)
+          .bind(this)
+          .then(function () {
+            return bounce.set('RequestTokenSecret', requestTokenSecret);
+          })
+          .bind(this)
+          .then(function () {
+            bounce.redirect('https://appcenter.intuit.com/Connect/Begin?oauth_token=' + requestToken);
+          });
       });
-    });
   } else {
-    return this.generateSetupUrl(bounce).bind(this).then(function (qboSetupUrl) {
-      return bounce.set('IntuitSetup', true).then(function () {
-        bounce.redirect(qboSetupUrl);
+    return this.generateSetupUrl(bounce)
+      .bind(this)
+      .then(function (qboSetupUrl) {
+        return bounce.set('IntuitSetup', true)
+          .then(function () {
+            bounce.redirect(qboSetupUrl);
+          });
       });
-    });
   }
   bounce.done();
 };
@@ -85,7 +105,7 @@ QBOConnector.prototype.generateSetupUrl = function (bounce) {
   var datasources = [];
   return BBPromise.try(function () {
     /* istanbul ignore else */
-    if (bounce.query.quickbooks || !bounce.query.quickbooks && !bounce.query.payments) {
+    if (bounce.query.quickbooks || (!(bounce.query.quickbooks) && !(bounce.query.payments))) {
       datasources.push('quckbooks');
     }
     /* istanbul ignore else */
@@ -128,6 +148,7 @@ QBOConnector.prototype.authorize = function (authorization) {
   this.settings.accessKey = authorization.get('AccessToken');
   this.settings.accessSecret = authorization.get('AccessTokenSecret');
   this.settings.companyId = authorization.get('CompanyId');
+
 };
 QBOConnector.prototype.getRootUrl = function () {
   var domain = 'quickbooks.api.intuit.com';
@@ -154,5 +175,5 @@ QBOConnector.prototype.request = function request(method, path, data) {
   });
 };
 
+
 module.exports = QBOConnector;
-//# sourceMappingURL=connector.js.map

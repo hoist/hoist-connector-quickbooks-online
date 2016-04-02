@@ -1,5 +1,4 @@
 'use strict';
-
 var moment = require('moment');
 var QBOConnector = require('./connector');
 var BBPromise = require('bluebird');
@@ -18,62 +17,67 @@ function QBOPoller(context) {
   this.connector = new QBOConnector(context.settings);
 }
 
+
 QBOPoller.prototype.poll = function () {
   return BBPromise.try(function buildPollCalls() {
-    this.logger.info('starting poll');
-    this.pollStart = moment().utc();
-    this.lastPolled = this.context.subscription.get('lastPolled');
-    if (!this.context.subscription.endpoints || this.context.subscription.endpoints.length < 1) {
-      this.logger.warn('no endpoints to poll!');
-      return [];
-    }
-    var sortedEndpoints = _.map(this.context.subscription.endpoints, _.bind(function (endpoint) {
-      var mappedEndpoint = {
-        endpointName: endpoint
-      };
-      var endpointMeta = this.context.subscription.get(endpoint);
-      endpointMeta = endpointMeta || {};
-      mappedEndpoint.endpointMeta = endpointMeta;
-      if (!endpointMeta.lastPolled) {
-        mappedEndpoint.pollType = 'new';
-      } else {
-        mappedEndpoint.pollType = 'update';
+      this.logger.info('starting poll');
+      this.pollStart = moment().utc();
+      this.lastPolled = this.context.subscription.get('lastPolled');
+      if ((!this.context.subscription.endpoints) || this.context.subscription.endpoints.length < 1) {
+        this.logger.warn('no endpoints to poll!');
+        return [];
       }
-      return mappedEndpoint;
-    }, this));
-    //we've polled this endpoint before so we can use cdc
-    this.logger.info({
-      endpoints: sortedEndpoints
-    }, 'sorted endpoints');
-    var updateEndpoints = _.filter(sortedEndpoints, function (endpoint) {
-      return endpoint.pollType === 'update';
+      var sortedEndpoints = _.map(this.context.subscription.endpoints, _.bind(function (endpoint) {
+        var mappedEndpoint = {
+          endpointName: endpoint
+        };
+        var endpointMeta = this.context.subscription.get(endpoint);
+        endpointMeta = endpointMeta || {};
+        mappedEndpoint.endpointMeta = endpointMeta;
+        if (!endpointMeta.lastPolled) {
+          mappedEndpoint.pollType = 'new';
+
+        } else {
+          mappedEndpoint.pollType = 'update';
+        }
+        return mappedEndpoint;
+      }, this));
+      //we've polled this endpoint before so we can use cdc
+      this.logger.info({
+        endpoints: sortedEndpoints
+      }, 'sorted endpoints');
+      var updateEndpoints = _.filter(sortedEndpoints, function (endpoint) {
+        return endpoint.pollType === 'update';
+      });
+      //we've not polled this endpoint before
+      var newEndpoints = _.filter(sortedEndpoints, function (endpoint) {
+        return endpoint.pollType === 'new';
+      });
+      this.logger.info({
+        newEndpoints: newEndpoints,
+        updateEndpoints: updateEndpoints
+      }, 'polling endpoints');
+      return _.map(newEndpoints, _.bind(function (newEndpoint) {
+        return this.pollNewEndpoint(newEndpoint);
+      }, this)).concat(this.pollForUpdates(updateEndpoints));
+    }, [], this)
+    .bind(this)
+    .then(function (polls) {
+      this.logger.info('waiting for all polls to finish');
+      return BBPromise.settle(polls);
+    })
+    .then(function () {
+      _.forEach(this.context.subscription.endpoints, _.bind(function (endpoint) {
+        var endpointMeta = this.context.subscription.get(endpoint);
+        if (!endpointMeta) {
+          this.context.subscription.set(endpoint, (endpointMeta = {}));
+        }
+        endpointMeta.lastPolled = moment().utc().format();
+      }, this));
+      this.context.subscription.delayTill(moment().utc().add(30, 'seconds').toDate());
+      this.logger.info('setting last polled date');
+      this.context.subscription.set('lastPolled', this.pollStart.format());
     });
-    //we've not polled this endpoint before
-    var newEndpoints = _.filter(sortedEndpoints, function (endpoint) {
-      return endpoint.pollType === 'new';
-    });
-    this.logger.info({
-      newEndpoints: newEndpoints,
-      updateEndpoints: updateEndpoints
-    }, 'polling endpoints');
-    return _.map(newEndpoints, _.bind(function (newEndpoint) {
-      return this.pollNewEndpoint(newEndpoint);
-    }, this)).concat(this.pollForUpdates(updateEndpoints));
-  }, [], this).bind(this).then(function (polls) {
-    this.logger.info('waiting for all polls to finish');
-    return BBPromise.settle(polls);
-  }).then(function () {
-    _.forEach(this.context.subscription.endpoints, _.bind(function (endpoint) {
-      var endpointMeta = this.context.subscription.get(endpoint);
-      if (!endpointMeta) {
-        this.context.subscription.set(endpoint, endpointMeta = {});
-      }
-      endpointMeta.lastPolled = moment().utc().format();
-    }, this));
-    this.context.subscription.delayTill(moment().utc().add(30, 'seconds').toDate());
-    this.logger.info('setting last polled date');
-    this.context.subscription.set('lastPolled', this.pollStart.format());
-  });
 };
 QBOPoller.prototype.pollForUpdates = function (endpoints) {
   return BBPromise.try(function () {
@@ -83,27 +87,31 @@ QBOPoller.prototype.pollForUpdates = function (endpoints) {
       entityList: entityList
     }, 'calling cdc');
 
-    return this.connector.get('/cdc?entities=' + entityList + '&changedSince=' + moment(this.lastPolled).toISOString()).bind(this).then(function (response) {
-      return this.flattenCDCResponse(_.map(endpoints, 'endpointName'), response);
-    }).then(function (flattenedCDCResponse) {
-      return _.filter(_.map(_.map(endpoints, 'endpointName'), _.bind(function (endpoint) {
-        if (flattenedCDCResponse[endpoint]) {
-          return this.processEntities(endpoint, flattenedCDCResponse[endpoint]);
-        }
-      }, this)));
-    });
+    return this.connector.get('/cdc?entities=' + entityList + '&changedSince=' + moment(this.lastPolled).toISOString())
+      .bind(this)
+      .then(function (response) {
+        return this.flattenCDCResponse(_.map(endpoints, 'endpointName'), response);
+      }).then(function (flattenedCDCResponse) {
+        return _.filter(_.map(_.map(endpoints, 'endpointName'), _.bind(function (endpoint) {
+          if (flattenedCDCResponse[endpoint]) {
+            return this.processEntities(endpoint, flattenedCDCResponse[endpoint]);
+          }
+        }, this)));
+      });
   }, [], this);
 };
 QBOPoller.prototype.pollNewEndpoint = function (endpoint) {
   this.logger.info({
     endpoint: endpoint
   }, 'polling endpoint');
-  return this.connector.get('/query?select * from ' + endpoint.endpointName).bind(this).then(function (response) {
-    this.logger.info({
-      endpoint: endpoint
-    }, 'got response, processing');
-    return this.processEntities(endpoint.endpointName, response.QueryResponse[endpoint.endpointName]);
-  });
+  return this.connector.get('/query?select * from ' + endpoint.endpointName)
+    .bind(this)
+    .then(function (response) {
+      this.logger.info({
+        endpoint: endpoint
+      }, 'got response, processing');
+      return this.processEntities(endpoint.endpointName, response.QueryResponse[endpoint.endpointName]);
+    });
 };
 QBOPoller.prototype.processEntities = function (endpointName, entities) {
   this.logger.info({
@@ -138,10 +146,11 @@ QBOPoller.prototype.raiseEvent = function (endpoint, entity) {
   return BBPromise.try(function () {
     var eventName = (this.context.connectorKey + ":" + entity.status + ":" + endpoint).toLowerCase();
     this.logger.info({
-      eventName: eventName
+      eventName: eventName,
     }, 'raising event');
     return this.emit(eventName, entity);
   }, [], this);
+
 };
 QBOPoller.prototype.setStatus = function (endpoint, entity) {
 
@@ -154,7 +163,7 @@ QBOPoller.prototype.setStatus = function (endpoint, entity) {
     var newStatus = 'new';
     if (!endpointMeta) {
       newStatus = 'modified';
-      this.context.subscription.set(endpoint, endpointMeta = {});
+      this.context.subscription.set(endpoint, (endpointMeta = {}));
     }
 
     if (!endpointMeta.ids) {
@@ -196,4 +205,3 @@ module.exports = function (context, raiseCallback) {
   return poller.poll();
 };
 module.exports._poller = QBOPoller;
-//# sourceMappingURL=poll.js.map
