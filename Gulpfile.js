@@ -7,15 +7,14 @@ requireDir('./gulp/tasks', {
   recurse: true
 });
 
-gulp.task('test', ['eslint-build', 'esdoc', 'mocha-server'], function () {
+gulp.task('test', ['eslint-build', 'esdoc'], function () {
   console.log('checking for error');
   if (helpers.getError()) {
     throw helpers.getError();
   }
 });
 gulp.task('default', function () {
-  return gulp.start('eslint-build', 'esdoc',
-    'mocha-server');
+  return gulp.start('eslint-build', 'esdoc');
 });
 
 gulp.task('build', (done) => {
