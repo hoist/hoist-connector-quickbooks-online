@@ -19,7 +19,7 @@ checkout:
 dependencies:
   override:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-    - docker pull hoist/connector-quickbooks:${CIRCLE_BRANCH//feature\//}
+    - docker pull hoist/connector-quickbooks:${CIRCLE_BRANCH//feature\//}; true;
     - docker build -t hoist/connector-quickbooks:${CIRCLE_BRANCH//feature\//} .
 test:
   override:
@@ -42,7 +42,6 @@ deployment:
     branch: [master,/feature\/.*/]
     owner: hoist
     commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push hoist/connector-quickbooks:${CIRCLE_BRANCH//feature\//}
 notify:
   webhooks:
