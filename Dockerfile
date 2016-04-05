@@ -21,6 +21,6 @@ USER root
 ADD . /usr/src/app
 RUN chown -R hoist:hoist /usr/src/app
 USER hoist
-
+RUN gulp build
 #start the deploy script
 CMD [ "./deploy.sh"]
